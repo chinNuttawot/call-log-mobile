@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   Text,
   PermissionsAndroid,
+  SafeAreaView,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import CallLogs from "react-native-call-log";
 
 export default function HomeScreen() {
@@ -40,25 +41,28 @@ export default function HomeScreen() {
         setText(`onTouchableOpacity : \n${JSON.stringify(c)}`);
       });
     } else {
-      _PermissionsAndroid()
+      _PermissionsAndroid();
       setText("Call Log permission denied");
     }
   };
   return (
-    <>
-      <TouchableOpacity onPress={() => onTouchableOpacity()}>
-        <Text>open log</Text>
-      </TouchableOpacity>
-      <Text>{text}</Text>
-    </>
+    <Fragment>
+      <SafeAreaView>
+        <TouchableOpacity
+          onPress={() => onTouchableOpacity()}
+          style={styles.titleContainer}
+        >
+          <Text>open log</Text>
+        </TouchableOpacity>
+        <Text>{text}</Text>
+      </SafeAreaView>
+    </Fragment>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+    marginTop: 100,
   },
   stepContainer: {
     gap: 8,
