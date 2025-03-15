@@ -7,6 +7,8 @@ import {
   PermissionsAndroid,
   SafeAreaView,
   View,
+  Clipboard,
+  Alert,
 } from "react-native";
 import { Fragment, useEffect, useState } from "react";
 import CallLogs from "react-native-call-log";
@@ -46,12 +48,16 @@ export default function HomeScreen() {
   const onTouchableOpacity = async () => {
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       CallLogs.load(5).then((c: any) => {
-        setText(`onTouchableOpacity : \n${JSON.stringify(c)}`);
+        setText(`${JSON.stringify(c)}`);
       });
     } else {
       _PermissionsAndroid();
       setText("Call Log permission denied");
     }
+  };
+  const copyToClipboard = () => {
+    Clipboard.setString(text);
+    Alert.alert("คัดลอกแล้ว!", "ข้อความถูกคัดลอกไปยังคลิปบอร์ดแล้ว");
   };
   return (
     <ParallaxScrollView
@@ -63,6 +69,12 @@ export default function HomeScreen() {
         style={styles.titleContainer}
       >
         <ThemedText>Open Log</ThemedText>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => copyToClipboard()}
+        style={styles.titleContainer}
+      >
+        <ThemedText>Copy Log</ThemedText>
       </TouchableOpacity>
       <ThemedText>{text}</ThemedText>
     </ParallaxScrollView>
