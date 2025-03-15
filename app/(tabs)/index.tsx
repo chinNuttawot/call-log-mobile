@@ -6,9 +6,17 @@ import {
   Text,
   PermissionsAndroid,
   SafeAreaView,
+  View,
 } from "react-native";
 import { Fragment, useEffect, useState } from "react";
 import CallLogs from "react-native-call-log";
+import { StatusBar } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { IconSymbol } from "@/components/ui/IconSymbol";
+import { ThemedView } from "@/components/ThemedView";
+import { Collapsible } from "@/components/Collapsible";
+import { ExternalLink } from "@/components/ExternalLink";
 
 export default function HomeScreen() {
   const [text, setText] = useState("");
@@ -46,24 +54,23 @@ export default function HomeScreen() {
     }
   };
   return (
-    <Fragment>
-      <SafeAreaView>
-        <TouchableOpacity
-          onPress={() => onTouchableOpacity()}
-          style={styles.titleContainer}
-        >
-          <Text>open log</Text>
-        </TouchableOpacity>
-        <Text>{text}</Text>
-      </SafeAreaView>
-    </Fragment>
+    <ParallaxScrollView
+      headerBackgroundColor={{ light: "#0288d1", dark: "#353636" }}
+      headerImage={<View />}
+    >
+      <TouchableOpacity
+        onPress={() => onTouchableOpacity()}
+        style={styles.titleContainer}
+      >
+        <ThemedText>Open Log</ThemedText>
+      </TouchableOpacity>
+      <ThemedText>{text}</ThemedText>
+    </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    marginTop: 100,
-  },
+  titleContainer: {},
   stepContainer: {
     gap: 8,
     marginBottom: 8,
