@@ -19,15 +19,18 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { ThemedView } from "@/components/ThemedView";
 import { Collapsible } from "@/components/Collapsible";
 import { ExternalLink } from "@/components/ExternalLink";
+import mockup from "../mockup/mockup";
+import PropsDataCalling from "./interface";
 
 export default function HomeScreen() {
   const [text, setText] = useState("");
+  const [dataCalling, setDataCalling] = useState([] as PropsDataCalling[]);
   const [granted, setGranted] = useState("");
 
   useEffect(() => {
+    getDataCalling();
     _PermissionsAndroid();
   });
-
   const _PermissionsAndroid = async () => {
     try {
       const _granted = await PermissionsAndroid.request(
@@ -45,9 +48,19 @@ export default function HomeScreen() {
       setText(JSON.stringify(e));
     }
   };
-  const onTouchableOpacity = async () => {
+  const getDataCalling = () => {
+    setDataCalling(mockup.dataCall);
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       CallLogs.load(20).then((c: any) => {
+        setText(`${JSON.stringify(c)}`);
+      });
+    } else {
+      setText("Call Log permission denied");
+    }
+  };
+  const onTouchableOpacity = async () => {
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      CallLogs.load(99999999).then((c: any) => {
         setText(`${JSON.stringify(c)}`);
       });
     } else {
@@ -58,6 +71,23 @@ export default function HomeScreen() {
   const copyToClipboard = () => {
     Clipboard.setString(text);
     Alert.alert("คัดลอกแล้ว!", "ข้อความถูกคัดลอกไปยังคลิปบอร์ดแล้ว");
+  };
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return `${date.getHours()}:${date.getMinutes()}`;
+  };
+  const RenderCalling = () => {
+    return dataCalling.map((v, k) => {
+      const date = formatDate(Number(v.timestamp));
+      return (
+        <View key={k}>
+          <ThemedText type="defaultSemiBold">
+            {v.type === "UNKNOWN" ? "ไม่รู้จัก" : v.phoneNumber}
+          </ThemedText>
+          <ThemedText>{date}</ThemedText>
+        </View>
+      );
+    });
   };
   return (
     <ParallaxScrollView
@@ -77,6 +107,7 @@ export default function HomeScreen() {
         <ThemedText>Copy Log</ThemedText>
       </TouchableOpacity>
       <ThemedText>{text}</ThemedText>
+      {/* {RenderCalling()} */}
     </ParallaxScrollView>
   );
 }
