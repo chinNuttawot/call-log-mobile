@@ -47,7 +47,7 @@ export default function HomeScreen() {
   };
   const onTouchableOpacity = async () => {
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      CallLogs.load(5).then((c: any) => {
+      CallLogs.load(20).then((c: any) => {
         setText(`${JSON.stringify(c)}`);
       });
     } else {
@@ -61,7 +61,7 @@ export default function HomeScreen() {
   };
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#0288d1", dark: "#353636" }}
+      headerBackgroundColor={{ light: "#0288d1", dark: "#0288d1" }}
       headerImage={<View />}
     >
       <TouchableOpacity
